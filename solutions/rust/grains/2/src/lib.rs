@@ -1,9 +1,10 @@
 pub fn square(s: u32) -> u64 {
     // todo!("grains of rice on square {s}");
-    2_u64.pow(s-1)
+    assert!(s >= 1, "Square must be between 1 and 64");
+    assert!(s < 65, "Square must be between 1 and 64");
+    (2_u128.pow(s-1)).try_into().unwrap()
 }
 
 pub fn total() -> u64 {
-    // todo!();
-    (1..=64).map(square).sum()
+    (2_u128.pow(64)-1).try_into().unwrap()
 }
