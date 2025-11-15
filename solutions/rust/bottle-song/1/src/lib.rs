@@ -1,29 +1,21 @@
-use std::collections::HashMap;
-
-pub fn recite(mut start_bottles: u32, mut take_down: u32) -> String {
+pub fn recite(start_bottles: u32, take_down: u32) -> String {
     // todo!("Return the bottle song starting at {start_bottles} and taking down {take_down} bottles")
-    let mut output = String::new();
-
-    let bottles: HashMap<u32, &str> = [
-        (10, "Ten"), (9, "Nine"), (8, "Eight"), (7, "Seven"),
-        (6, "Six"), (5, "Five"), (4, "Four"), (3, "Three"),
-        (2, "Two"), (1, "One"), (0, "no")
-    ].iter().cloned().collect();
-    
-    for _ in 0..take_down {
-        let bottle_p1 = if start_bottles == 1 { "bottle" } else { "bottles" };
-        let verse1 = format!(
-            "{} green {} hanging on the wall,\n\
-             {} green {} hanging on the wall,\n\
-             And if one green bottle should accidentally fall,\n",
-            bottles[&start_bottles], bottle_p1, bottles[&start_bottles], bottle_p1);
-        let bottle_p2 = if start_bottles-1 == 1 { "bottle" } else { "bottles" };
-        let verse2 = format!("There'll be {} green {} hanging on the wall.\n\n",
-            bottles[&(start_bottles-1)].to_lowercase(), bottle_p2);
-        output.push_str(&verse1);
-        output.push_str(&verse2);
-        start_bottles = start_bottles-1; 
-        if start_bottles == 0 { break; }
+    let bottles = vec!["Ten", "Nine", "Eight", "Seven", "Six", "Five", "Four", "Three", "Two", "One", "No"];
+    let mut result = String::new();
+    for i in 0..take_down {
+        let current_index = (10 - (start_bottles - i)) as usize;
+        let next_index = (10 - (start_bottles - i - 1)) as usize;
+        
+        let current_bottle = if bottles[current_index] == "One" { "bottle" } else { "bottles" };
+        let next_bottle = if bottles[next_index] == "One" { "bottle" } else { "bottles" };
+        
+        result.push_str(&format!(
+            "{} green {} hanging on the wall,\n{} green {} hanging on the wall,\nAnd if one green bottle should accidentally fall,\nThere'll be {} green {} hanging on the wall.\n",
+            bottles[current_index], current_bottle,
+            bottles[current_index], current_bottle,
+            bottles[next_index].to_lowercase(), next_bottle
+        ));
+        if i < take_down - 1 { result.push('\n'); }
     }
-    output.trim_end().to_string() // Remove final extra newline
+    result
 }
