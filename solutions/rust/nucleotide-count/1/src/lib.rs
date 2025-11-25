@@ -1,31 +1,23 @@
 use std::collections::HashMap;
 
 pub fn count(nucleotide: char, dna: &str) -> Result<usize, char> {
-    // todo!("How much of nucleotide type '{nucleotide}' is contained inside DNA string '{dna}'?");
-    if !['A', 'C', 'G', 'T'].contains(&nucleotide) {
-        return Err(nucleotide);
+    //todo!("How much of nucleotide type '{nucleotide}' is contained inside DNA string '{dna}'?");
+    if !"ACGT".contains(nucleotide) { return Err(nucleotide); }
+    let mut count = 0;
+    for c in dna.chars() { 
+        if !"ACTG".contains(c) { return Err(c); }
+        if c == nucleotide { count += 1; }
     }
-    for c in dna.chars() {
-        if !['A', 'C', 'G', 'T'].contains(&c) {
-            return Err(c);
-        }
-    }
-    Ok(dna.chars().filter(|c| *c == nucleotide).count())
+    Ok(count)
 }
+
 
 pub fn nucleotide_counts(dna: &str) -> Result<HashMap<char, usize>, char> {
     //todo!("How much of every nucleotide type is contained inside DNA string '{dna}'?");
-    let mut counts = HashMap::from([
-        ('A', 0),
-        ('C', 0),
-        ('G', 0),
-        ('T', 0),
-    ]);
+    let mut nucleotide_counts = HashMap::from([('G', 0), ('C', 0), ('T', 0), ('A', 0)]);
     for c in dna.chars() {
-        match c {
-            'A' | 'C' | 'G' | 'T' => *counts.entry(c).or_insert(0) += 1,
-            invalid => return Err(invalid),
-        }
+        if !"ACGT".contains(c) { return Err(c); }
+        *nucleotide_counts.get_mut(&c).unwrap() += 1;
     }
-    Ok(counts)
+    Ok(nucleotide_counts)
 }
