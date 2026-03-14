@@ -1,14 +1,9 @@
-use std::collections::HashSet;
-
 pub fn check(candidate: &str) -> bool {
     // todo!("Is {candidate} an isogram?");
-    if !candidate.is_empty() {
-        let filtered_candidate: Vec<char> = candidate.to_lowercase()
-            .chars()
-            .filter(|c| !c.is_whitespace() && *c != '-')
-            .collect();
-        let unique_chars: HashSet<char> = filtered_candidate.iter().cloned().collect();
-        return filtered_candidate.len() == unique_chars.len();
-    }
-    true
+    let char_list: Vec<char> = candidate.to_lowercase().chars().filter(|c| c.is_alphabetic()).collect();
+    let mut char_list_dedup: Vec<char> = char_list.iter().cloned().collect();
+    char_list_dedup.sort();
+    char_list_dedup.dedup();
+    char_list.len() == char_list_dedup.len()
+    
 }
